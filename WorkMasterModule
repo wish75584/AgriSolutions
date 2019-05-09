@@ -1,0 +1,59 @@
+package com.stubborn.android.agrisolutions;
+
+public class WorkMasterModule {
+    private int plotId;
+    private String wm_name;
+    private String wm_dose;
+    private String wm_area;
+    private Boolean success;
+    private String message;
+
+    public String getWm_name() {
+        return wm_name;
+    }
+
+    public Boolean getSuccess() {
+        return success;
+    }
+
+    public void setSuccess(Boolean success) {
+        this.success = success;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public int getPlotId() {
+        return plotId;
+    }
+
+    public void setPlotId(int plotId) {
+        this.plotId = plotId;
+    }
+
+
+    public void setWm_name(String wm_name) {
+        this.wm_name = wm_name;
+    }
+
+    public String getWm_dose() {
+        return wm_dose;
+    }
+
+    public void setWm_dose(String wm_dose) {
+        this.wm_dose = wm_dose;
+    }
+
+    public String getWm_area() {
+        return wm_area;
+    }
+
+    public void setWm_area(String wm_area) {
+        this.wm_area = wm_area;
+    }
+}
