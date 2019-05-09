@@ -1,0 +1,84 @@
+package com.stubborn.android.agrisolutions;
+
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+public class GetMaster extends AppCompatActivity {
+
+    private TextView textViewResult;
+    ApiInterface apiInterface;
+
+    RecyclerView recyclerView;
+    MasterAdapter adapter;
+    ArrayList<WorkMasterModule> list;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_get_master);
+
+        recyclerView = (RecyclerView)findViewById(R.id.recycler_view);
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+
+        recyclerView.setHasFixedSize(true);
+        adapter = new MasterAdapter(this,list);
+        recyclerView.setAdapter(adapter);
+
+
+        textViewResult = findViewById(R.id.text_view_result);
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://half-witted-transis.000webhostapp.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        apiInterface = retrofit.create(ApiInterface.class);
+        Call<List<WorkMasterModule>> call = apiInterface.getMaster();
+        call.enqueue(new Callback<List<WorkMasterModule>>() {
+            @Override
+            public void onResponse(Call<List<WorkMasterModule>> call, Response<List<WorkMasterModule>> response) {
+                if (!response.isSuccessful()) {
+                    // textViewResult.setText("Code: " + response.code());
+                    Log.e("onFailure", response.code() + "");
+                    return;
+                }
+
+                // List<WorkMasterModule> wmmList = response.body();
+                ArrayList<WorkMasterModule> wmmList = (ArrayList<WorkMasterModule>) response.body();
+                // mExampleList = (ArrayList<WorkMasterModule>) response.body();
+               for (WorkMasterModule wMM : wmmList) {
+
+
+                   String name = wMM.getWm_name();
+                   list.add(name);
+                    Log.e("data from retrofit", name + "");
+                    // textViewResult.append(content);
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<WorkMasterModule>> call, Throwable t) {
+                // textViewResult.setText(t.getMessage());
+                Log.e("onFailure", t.getMessage());
+            }
+        });
+
+    }
+}
